@@ -1,11 +1,18 @@
 <template>
   <div class="todo">
-    <input type="text" v-model="inputValue">
+    <h2>TODOを追加</h2>
+    <div class="input-wrap">
+      <input type="text" v-model="inputValue">
+      <button v-on:click="handleClick">TODOを追加</button>
+    </div>
+    <h2>TODOを絞り込む</h2>
+    <div class="input-wrap">
+      <input type="text" placeholder="フィルタテキスト" v-model="filterValue">
+    </div>
     <p>入力した値: {{ inputValue }}</p>
-    <button v-on:click="handleClick">TODOを追加</button>
     <ul>
       <li
-        v-for="todo in todoItems"
+        v-for="todo in filterTodoItems"
         v-bind:key="todo.id"
         v-on:click="todo.done = !todo.done"
       >
@@ -18,6 +25,24 @@
 
 <style lang="scss" scoped>
 .todo {
+  .input-wrap {
+    input {
+      padding: 8px;
+      border: 1px solid rgb(221, 221, 221);
+      border-radius: 5px;
+    }
+
+    button {
+      padding: 6px;
+      border: none;
+      border-radius: 5px;
+      color: #fff;
+      background-color: #eb6100;
+      margin-left: 12px;
+      cursor: pointer;
+    }
+  }
+
   ul {
     max-width: 600px;
     margin: 20px auto;
@@ -56,7 +81,8 @@ export default defineComponent({
           done: false,
           text: 'Test'
         },
-      ]
+      ],
+      filterValue: '',
     }
   },
   // methods・・・コンポーネント内で使用可能なメソッドとして定義できる
@@ -76,6 +102,20 @@ export default defineComponent({
       })
 
       this.inputValue = ''
+    }
+  },
+  // 既存のデータになんらかの処理（フィルタリングしたり、計算したりしたいとき）を
+  // 加えたい時に使う
+  computed: {
+    filterTodoItems() {
+      // filterValueが空っぽの時は、todoItems（既存の配列）を返す
+      if (!this.filterValue) {
+        return this.todoItems
+      }
+
+      return this.todoItems.filter((todo) => {
+        return todo.text.includes(this.filterValue)
+      });
     }
   }
 })
