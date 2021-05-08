@@ -1,15 +1,30 @@
 <template>
-  <input type="text" v-model="inputValue">
-  <p>入力した値: {{ inputValue }}</p>
-  <button v-on:click="handleClick">TODOを追加</button>
-  <ul>
-    <!-- 分割代入で指定可能 -->
-    <li v-for="{id, text} in todoItems" v-bind:key="id">
-      {{ id }}
-      {{ text }}
-    </li>
-  </ul>
+  <div class="todo">
+    <input type="text" v-model="inputValue">
+    <p>入力した値: {{ inputValue }}</p>
+    <button v-on:click="handleClick">TODOを追加</button>
+    <ul>
+      <!-- 分割代入で指定可能 -->
+      <li v-for="{id, text} in todoItems" v-bind:key="id">
+        {{ id }}
+        {{ text }}
+      </li>
+    </ul>
+  </div>
 </template>
+
+<style lang="scss" scoped>
+.todo {
+  ul {
+    max-width: 600px;
+    margin: 20px auto;
+
+    li {
+      text-align: left;
+    }
+  }
+}
+</style>
 
 <script>
 import { defineComponent } from 'vue'
