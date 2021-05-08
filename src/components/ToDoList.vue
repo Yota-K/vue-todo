@@ -4,10 +4,13 @@
     <p>入力した値: {{ inputValue }}</p>
     <button v-on:click="handleClick">TODOを追加</button>
     <ul>
-      <!-- 分割代入で指定可能 -->
-      <li v-for="{id, text} in todoItems" v-bind:key="id">
-        {{ id }}
-        {{ text }}
+      <li
+        v-for="todo in todoItems"
+        v-bind:key="todo.id"
+        v-on:click="todo.done = !todo.done"
+      >
+        <span v-if="todo.done" v-bind:class="['done']">✔︎</span>
+        <span>{{ todo.id }}, {{ todo.text }}</span>
       </li>
     </ul>
   </div>
@@ -20,7 +23,17 @@
     margin: 20px auto;
 
     li {
+      cursor: pointer;
       text-align: left;
+
+      .done {
+        margin-right: 10px;
+      }
+
+      &:hover {
+        background: #ddd;
+        transition: all 0.4s;
+      }
     }
   }
 }
@@ -37,21 +50,28 @@ export default defineComponent({
   data() {
     return {
       inputValue: '',
-      todoItems: []
+      todoItems: [
+        {
+          id: 1,
+          done: false,
+          text: 'Test'
+        },
+      ]
     }
   },
   // methods・・・コンポーネント内で使用可能なメソッドとして定義できる
   methods: {
     handleClick() {
       if (!this.inputValue) {
-        alert('値が入力されていません');
-        this.inputValue = '';
+        alert('値が入力されていません')
+        this.inputValue = ''
         
-        return;
+        return
       }
 
       this.todoItems.push({
         id: this.todoItems.length + 1,
+        done: false,
         text: this.inputValue
       })
 
