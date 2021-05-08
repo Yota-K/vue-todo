@@ -11,14 +11,13 @@
     </div>
     <p>入力した値: {{ inputValue }}</p>
     <ul>
-      <li
+      <ToDoItem 
         v-for="todo in filterTodoItems"
-        v-bind:key="todo.id"
-        v-on:click="todo.done = !todo.done"
-      >
-        <span v-if="todo.done" v-bind:class="['done']">✔︎</span>
-        <span>{{ todo.id }}, {{ todo.text }}</span>
-      </li>
+        :key="todo.id"
+        :id="todo.id"
+        :done="todo.done"
+        :text="todo.text"
+      />
     </ul>
   </div>
 </template>
@@ -46,29 +45,19 @@
   ul {
     max-width: 600px;
     margin: 20px auto;
-
-    li {
-      cursor: pointer;
-      text-align: left;
-
-      .done {
-        margin-right: 10px;
-      }
-
-      &:hover {
-        background: #ddd;
-        transition: all 0.4s;
-      }
-    }
   }
 }
 </style>
 
 <script>
 import { defineComponent } from 'vue'
+import ToDoItem from '../components/ToDoItem.vue'
 
 export default defineComponent({
   name: 'ToDoList',
+  components: {
+    ToDoItem
+  },
   // data・・・基本的なプロパティの定義
   // dataプロパティに変更が起こるとVue.jsが検知して再レンダリングが行われる
   // Reactでいうstate的なやつ？
