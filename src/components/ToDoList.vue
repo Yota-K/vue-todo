@@ -2,21 +2,22 @@
   <div class="todo">
     <h2>TODOを追加</h2>
     <div class="input-wrap">
-      <input type="text" v-model="inputValue">
-      <button v-on:click="handleClick">TODOを追加</button>
+      <input type="text" v-model="state.inputValue">
+      <button @click="handleClick">TODOを追加</button>
     </div>
     <h2>TODOを絞り込む</h2>
     <div class="input-wrap">
-      <input type="text" placeholder="フィルタテキスト" v-model="filterValue">
+      <input type="text" placeholder="フィルタテキスト" v-model="state.filterValue">
     </div>
-    <p>入力した値: {{ inputValue }}</p>
+    <p>入力した値: {{ state.inputValue }}</p>
     <ul>
-      <ToDoItem 
+      <ToDoItem
         v-for="todo in filterTodoItems"
         :key="todo.id"
         :id="todo.id"
         :done="todo.done"
         :text="todo.text"
+        @toggle="toggleTodo"
       />
     </ul>
   </div>
@@ -49,20 +50,28 @@
 }
 </style>
 
-<script>
-import { defineComponent } from 'vue'
+<script lang="ts">
+import { defineComponent, reactive, computed } from 'vue'
 import ToDoItem from '../components/ToDoItem.vue'
+
+type TodoState = {
+  inputValue: string;
+  todoItems: {
+    id: number;
+    done: boolean;
+    text: string;
+  }[]
+  filterValue: string;
+}
 
 export default defineComponent({
   name: 'ToDoList',
   components: {
     ToDoItem
   },
-  // data・・・基本的なプロパティの定義
-  // dataプロパティに変更が起こるとVue.jsが検知して再レンダリングが行われる
-  // Reactでいうstate的なやつ？
-  data() {
-    return {
+  setup() {
+    // コンポーネントのローカルStateを定義できる
+    const state = reactive<TodoState>({
       inputValue: '',
       todoItems: [
         {
@@ -72,40 +81,48 @@ export default defineComponent({
         },
       ],
       filterValue: '',
-    }
-  },
-  // methods・・・コンポーネント内で使用可能なメソッドとして定義できる
-  methods: {
-    handleClick() {
-      if (!this.inputValue) {
+    })
+
+    const handleClick = () => {
+      if (!state.inputValue) {
         alert('値が入力されていません')
-        this.inputValue = ''
+        state.inputValue = ''
         
         return
       }
 
-      this.todoItems.push({
-        id: this.todoItems.length + 1,
+      state.todoItems.push({
+        id: state.todoItems.length + 1,
         done: false,
-        text: this.inputValue
+        text: state.inputValue
       })
 
-      this.inputValue = ''
+      state.inputValue = ''
     }
-  },
-  // 既存のデータになんらかの処理（フィルタリングしたり、計算したりしたいとき）を
-  // 加えたい時に使う
-  computed: {
-    filterTodoItems() {
+
+    const toggleTodo = (id: number) => {
+      const todo = state.todoItems.find(todo => todo.id === id)
+      if (!todo) return
+      todo.done = !todo.done
+    }
+
+    const filterTodoItems = computed(() => {
       // filterValueが空っぽの時は、todoItems（既存の配列）を返す
-      if (!this.filterValue) {
-        return this.todoItems
+      if (!state.filterValue) {
+        return state.todoItems
       }
 
-      return this.todoItems.filter((todo) => {
-        return todo.text.includes(this.filterValue)
+      return state.todoItems.filter((todo) => {
+        return todo.text.includes(state.filterValue)
       });
+    })
+
+    return {
+      state,
+      handleClick,
+      toggleTodo,
+      filterTodoItems
     }
-  }
+  },
 })
 </script>

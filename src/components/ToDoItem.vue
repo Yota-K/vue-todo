@@ -1,6 +1,6 @@
 <template>
-  <li>
-    <span v-if="done" v-bind:class="['done']">✔︎</span>
+  <li @click="toggle">
+    <span v-if="done" :class="['done']">✔︎</span>
     <span>{{ id }}, {{ text }}</span>
   </li>
 </template>
@@ -22,18 +22,35 @@ li {
 </style>
 
 <script lang="ts">
-import { defineComponent } from 'vue'
+import { defineComponent, SetupContext } from 'vue'
+
+type Props = {
+  id: number;
+  done: boolean;
+  text: string;
+};
 
 export default defineComponent({
   props: {
     id: {
-      type: Number
+      type: Number,
+      required: true
     },
     done: {
       type: Boolean
     },
     text: {
-      type: String
+      type: String,
+      required: true
+    }
+  },
+  setup(props: Props, context: SetupContext) {
+    const toggle = () => {
+      context.emit('toggle', props.id)
+    }
+
+    return {
+      toggle
     }
   }
 })
