@@ -10,7 +10,7 @@
     <div class="input-wrap">
       <input type="text" placeholder="フィルタテキスト" v-model="state.filterValue">
     </div>
-    <ul>
+    <ul v-if="filterTodoItems.length">
       <ToDoItem
         v-for="todo in filterTodoItems"
         :key="todo.id"
@@ -21,6 +21,7 @@
         @remove="removeTodo"
       />
     </ul>
+    <p v-else>TODOが登録されていません</p>
   </div>
 </template>
 
@@ -74,13 +75,7 @@ export default defineComponent({
     // コンポーネントのローカルStateを定義できる
     const state = reactive<TodoState>({
       inputValue: '',
-      todoItems: [
-        {
-          id: 1,
-          done: false,
-          text: 'Test'
-        },
-      ],
+      todoItems: [],
       filterValue: '',
     })
 
@@ -92,11 +87,11 @@ export default defineComponent({
         return
       }
 
-      state.todoItems.push({
+      state.todoItems = [...state.todoItems, {
         id: state.todoItems.length + 1,
         done: false,
         text: state.inputValue
-      })
+      }]
 
       state.inputValue = ''
     }
