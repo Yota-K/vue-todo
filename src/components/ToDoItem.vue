@@ -1,28 +1,41 @@
 <template>
   <li @click="toggle">
-    <span v-if="done" :class="['done']">✔︎</span>
-    <span>{{ id }}, {{ text }}</span>
+    <div class="todo-text">
+      <span v-if="done" :class="['done']">✔︎</span>
+      <span>{{ id }}, {{ text }}</span>
+    </div>
+    <Button @click="removeTodo" :text="'削除'" />
   </li>
 </template>
 
 <style lang="scss" scoped>
 li {
-  cursor: pointer;
-  text-align: left;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin: 12px 0;
 
-  .done {
-    margin-right: 10px;
-  }
+  .todo-text {
+    cursor: pointer;
+    text-align: left;
+    width: 85%;
+    padding: 8px;
 
-  &:hover {
-    background: #ddd;
-    transition: all 0.4s;
+    .done {
+      margin-right: 10px;
+    }
+
+    &:hover {
+      background: #ddd;
+      transition: all 0.4s;
+    }
   }
 }
 </style>
 
 <script lang="ts">
 import { defineComponent, SetupContext } from 'vue'
+import Button from '../components/Button.vue'
 
 type Props = {
   id: number;
@@ -31,6 +44,9 @@ type Props = {
 };
 
 export default defineComponent({
+  components: {
+    Button
+  },
   props: {
     id: {
       type: Number,
@@ -44,13 +60,20 @@ export default defineComponent({
       required: true
     }
   },
+  // emitは配列で定義する必要あり
+  emits: ['toggle', 'remove'],
   setup(props: Props, context: SetupContext) {
     const toggle = () => {
       context.emit('toggle', props.id)
     }
 
+    const removeTodo = () => {
+      context.emit('remove', props.id)
+    }
+
     return {
-      toggle
+      toggle,
+      removeTodo
     }
   }
 })

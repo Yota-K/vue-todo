@@ -5,11 +5,11 @@
       <input type="text" v-model="state.inputValue">
       <button @click="handleClick">TODOを追加</button>
     </div>
+    <p>入力した値: {{ state.inputValue }}</p>
     <h2>TODOを絞り込む</h2>
     <div class="input-wrap">
       <input type="text" placeholder="フィルタテキスト" v-model="state.filterValue">
     </div>
-    <p>入力した値: {{ state.inputValue }}</p>
     <ul>
       <ToDoItem
         v-for="todo in filterTodoItems"
@@ -18,6 +18,7 @@
         :done="todo.done"
         :text="todo.text"
         @toggle="toggleTodo"
+        @remove="removeTodo"
       />
     </ul>
   </div>
@@ -106,6 +107,10 @@ export default defineComponent({
       todo.done = !todo.done
     }
 
+    const removeTodo = (id: number) => {
+      state.todoItems = state.todoItems.filter(todo => todo.id !== id)
+    }
+
     const filterTodoItems = computed(() => {
       // filterValueが空っぽの時は、todoItems（既存の配列）を返す
       if (!state.filterValue) {
@@ -121,6 +126,7 @@ export default defineComponent({
       state,
       handleClick,
       toggleTodo,
+      removeTodo,
       filterTodoItems
     }
   },
