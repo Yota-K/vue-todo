@@ -3,7 +3,7 @@
     <h2>TODOを追加</h2>
     <div class="input-wrap">
       <input type="text" v-model="state.inputValue">
-      <button @click="addTodo">TODOを追加</button>
+      <Button @click="addTodo" :text="'TODOを追加'" />
     </div>
     <p>入力した値: {{ state.inputValue }}</p>
     <h2>TODOを絞り込む</h2>
@@ -28,12 +28,14 @@
 <script lang="ts">
 import { defineComponent } from 'vue'
 import ToDoItem from '../components/ToDoItem.vue'
+import Button from '../components/Button.vue'
 import { useTodo } from '../composable/todo/use-todo';
 
 export default defineComponent({
   name: 'ToDoList',
   components: {
-    ToDoItem
+    ToDoItem,
+    Button
   },
   setup() {
     const {
