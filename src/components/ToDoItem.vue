@@ -1,5 +1,5 @@
 <template>
-  <li @click="toggle">
+  <li @click="toggleTodo">
     <div class="todo-text">
       <span v-if="done" :class="['done']">✔︎</span>
       <span>{{ id }}, {{ text }}</span>
@@ -7,31 +7,6 @@
     <Button @click="removeTodo" :text="'削除'" />
   </li>
 </template>
-
-<style lang="scss" scoped>
-li {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  margin: 12px 0;
-
-  .todo-text {
-    cursor: pointer;
-    text-align: left;
-    width: 85%;
-    padding: 8px;
-
-    .done {
-      margin-right: 10px;
-    }
-
-    &:hover {
-      background: #ddd;
-      transition: all 0.4s;
-    }
-  }
-}
-</style>
 
 <script lang="ts">
 import { defineComponent, SetupContext } from 'vue'
@@ -60,21 +35,45 @@ export default defineComponent({
       required: true
     }
   },
-  // emitは配列で定義する必要あり
-  emits: ['toggle', 'remove'],
+  emits: ['toggleTodo', 'removeTodo'],
   setup(props: Props, context: SetupContext) {
-    const toggle = () => {
-      context.emit('toggle', props.id)
+    const toggleTodo = () => {
+      context.emit('toggleTodo', props.id);
     }
 
     const removeTodo = () => {
-      context.emit('remove', props.id)
+      context.emit('removeTodo', props.id);
     }
 
     return {
-      toggle,
-      removeTodo
+      toggleTodo,
+      removeTodo,
     }
   }
 })
 </script>
+
+<style lang="scss" scoped>
+li {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin: 12px 0;
+
+  .todo-text {
+    cursor: pointer;
+    text-align: left;
+    width: 85%;
+    padding: 8px;
+
+    .done {
+      margin-right: 10px;
+    }
+
+    &:hover {
+      background: #ddd;
+      transition: all 0.4s;
+    }
+  }
+}
+</style>

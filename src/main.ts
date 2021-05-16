@@ -1,5 +1,6 @@
-import { createApp } from 'vue'
+import { provide, createApp } from 'vue'
+import { todoState, todoStateKey } from './composable/todo/todo';
 import App from './App.vue'
 import './index.css'
 
-createApp(App).mount('#app')
+createApp(App).provide(todoStateKey, todoState()).mount('#app')
