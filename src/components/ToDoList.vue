@@ -2,13 +2,13 @@
   <div class="todo">
     <h2>TODOを追加</h2>
     <div class="input-wrap">
-      <input type="text" v-model="state.inputValue">
-      <Button @click="addTodo" :text="'TODOを追加'" />
+      <input type="text" v-model="inputValue">
+      <Button @click="addTodoFunc" :text="'TODOを追加'" />
     </div>
-    <p>入力した値: {{ state.inputValue }}</p>
+    <p>入力した値: {{ inputValue }}</p>
     <h2>TODOを絞り込む</h2>
     <div class="input-wrap">
-      <input type="text" placeholder="フィルタテキスト" v-model="state.filterValue">
+      <input type="text" placeholder="フィルタテキスト" v-model="filterValue">
     </div>
     <ul v-if="filterTodoItems.length">
       <ToDoItem
@@ -29,7 +29,9 @@
 import { defineComponent } from 'vue'
 import ToDoItem from '../components/ToDoItem.vue'
 import Button from '../components/Button.vue'
-import { useTodo } from '../composable/todo/use-todo';
+import { useTodo } from '../store/todo/use-todo';
+import { useInputValue } from '../composables/use-input-value';
+import { useFilterValue } from '../composables/use-filter-value';
 
 export default defineComponent({
   name: 'ToDoList',
@@ -38,17 +40,19 @@ export default defineComponent({
     Button
   },
   setup() {
-    const {
-      state,
-      addTodo,
-      removeTodo,
-      toggleTodo,
-      filterTodoItems
-    } = useTodo();
+    const { addTodo, removeTodo, toggleTodo } = useTodo();
+    const { inputValue } = useInputValue();
+    const { filterValue, filterTodoItems } = useFilterValue();
+
+    const addTodoFunc = () => {
+      addTodo(inputValue.value);
+      inputValue.value = '';
+    }
 
     return {
-      state,
-      addTodo,
+      inputValue,
+      filterValue,
+      addTodoFunc,
       removeTodo,
       toggleTodo,
       filterTodoItems

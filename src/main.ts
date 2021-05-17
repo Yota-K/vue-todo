@@ -1,5 +1,5 @@
 import { provide, createApp } from 'vue'
-import { todoState, todoStateKey } from './composable/todo/todo';
+import { todoState, todoStateKey } from './store/todo/todo';
 import App from './App.vue'
 import './index.css'
 
