@@ -1,5 +1,6 @@
 import { reactive, InjectionKey, computed } from 'vue'
 
+// TODOの型を定義
 type TodoState = {
   inputValue: string;
   todoItems: {
@@ -11,19 +12,17 @@ type TodoState = {
 }
 
 export const todoState = () => {
-  console.log('loaded todoState');
-
+  // 管理したいステートを定義
   const state = reactive<TodoState>({
     inputValue: '',
     todoItems: [],
     filterValue: '',
   });
 
+  // TODO追加
   const addTodo = () => {
     if (!state.inputValue) {
       alert('値が入力されていません');
-      state.inputValue = '';
-
       return;
     };
 
@@ -36,10 +35,12 @@ export const todoState = () => {
     state.inputValue = '';
   }
 
+  // TODOを削除
   const removeTodo = (id: number) => {
     state.todoItems = state.todoItems.filter(todo => todo.id !== id)
   }
 
+  // TODOのチェック
   const toggleTodo = (id: number) => {
     const todo = state.todoItems.find(todo => todo.id === id);
 
@@ -48,6 +49,7 @@ export const todoState = () => {
     todo.done = !todo.done;
   }
 
+  // TODOの絞り込み検索
   const filterTodoItems = computed(() => {
     // filterValueが空っぽの時は、todoItems（既存の配列）を返す
     if (!state.filterValue) return state.todoItems
@@ -66,6 +68,8 @@ export const todoState = () => {
   }
 }
 
+// ステートの型を生成
 export type todoStateType = ReturnType<typeof todoState>;
 
+// provideメソッドに指定するInjectionKeyを指定
 export const todoStateKey: InjectionKey<todoStateType> = Symbol('todoState');
