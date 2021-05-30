@@ -1,15 +1,9 @@
-import { reactive, toRefs } from 'vue'
-
-type InputValueState = {
-  inputValue: string;
-}
+import { ref } from 'vue';
 
 export const useInputValue = () => {
-  const state = reactive<InputValueState>({
-    inputValue: '',
-  });
+  const inputValue = ref('');
 
   return {
-    ...toRefs(state)
+    inputValue,
   }
-}
+};

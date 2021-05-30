@@ -1,11 +1,6 @@
 <template>
+  <TodoSampleInput />
   <div class="todo">
-    <h2>TODOを追加</h2>
-    <div class="input-wrap">
-      <input type="text" v-model="inputValue">
-      <button @click="addTodoFunc" class="base-button">Todoを追加</button>
-    </div>
-    <p>入力した値: {{ inputValue }}</p>
     <ul v-if="state.todoItems.length">
       <li @click="toggleTodo(todo.id)" v-for="todo in state.todoItems" :key="todo">
         <div class="todo-text">
@@ -22,26 +17,18 @@
 <script lang="ts">
 import { defineComponent } from 'vue';
 import { useTodo } from '../store/todo/use-todo';
-import { useInputValue } from '../composables/use-input-value';
+import TodoSampleInput from '../components/TodoSampleInput.vue'
 
 export default defineComponent({
   name: 'TodoSample',
+  components: {
+    TodoSampleInput,
+  },
   setup() {
-    // コンポーネントの中身は最低限のロジックのみを記述すれば済む！
-
-    const { inputValue } = useInputValue();
-    const { state, addTodo, removeTodo, toggleTodo } = useTodo();
-
-    const addTodoFunc = () => {
-      addTodo(inputValue.value);
-      // inputの中身をリセットする
-      inputValue.value = '';
-    }
+    const { state, removeTodo, toggleTodo } = useTodo();
 
     return {
-      inputValue,
       state,
-      addTodoFunc,
       removeTodo,
       toggleTodo,
     };
@@ -51,29 +38,6 @@ export default defineComponent({
 
 <style lang="scss" scoped>
 .todo {
-  .base-button {
-    padding: 6px;
-    border: none;
-    border-radius: 5px;
-    color: #fff;
-    font-weight: bold;
-    margin-left: 12px;
-    cursor: pointer;
-  }
-
-  .input-wrap {
-    input {
-      padding: 8px;
-      border: 1px solid rgb(221, 221, 221);
-      border-radius: 5px;
-    }
-
-    button {
-      @extend .base-button;
-      background: #eb6100;
-    }
-  }
-
   ul {
     max-width: 800px;
     margin: 20px auto;
@@ -85,7 +49,13 @@ export default defineComponent({
       margin: 12px 0;
 
       button {
-        @extend .base-button;
+        padding: 6px;
+        border: none;
+        border-radius: 5px;
+        color: #fff;
+        font-weight: bold;
+        margin-left: 12px;
+        cursor: pointer;
         background: #2c3e50;
       }
 
