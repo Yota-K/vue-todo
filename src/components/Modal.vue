@@ -1,8 +1,8 @@
 <template>
   <div :style="isModalActive ? { display: 'block' } : { display: 'none' }">
-    <First v-if="!isSetFirstValue && !isSetSecondValue && !isSetThirdValue" />
-    <Second v-else-if="isSetFirstValue"/>
-    <Third v-else />
+    <First @close-modal="$emit('closeModal')" />
+    <Second @close-modal="$emit('closeModal')" />
+    <Third @close-modal="$emit('closeModal')"/>
   </div>
 </template>
 
@@ -18,20 +18,9 @@ export default defineComponent({
     Second,
     Third,
   },
+  emits: ['closeModal'],
   props: {
     isModalActive: {
-      type: Boolean,
-      required: true,
-    },
-    isSetFirstValue: {
-      type: Boolean,
-      required: true,
-    },
-    isSetSecondValue: {
-      type: Boolean,
-      required: true,
-    },
-    isSetThirdValue: {
       type: Boolean,
       required: true,
     },

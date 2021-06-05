@@ -7,9 +7,7 @@
     <p>テストテストテストテストテストテストテストテストテストテスト</p>
     <Modal
       :is-modal-active="isModalActive"
-      :is-set-first-value="setFirstValue"
-      :is-set-second-value="setSecondValue"
-      :is-set-third-value="setThirdValue"
+      @close-modal="toggleModal"
     />
   </div>
 </template>
@@ -25,18 +23,10 @@ export default defineComponent({
   },
   setup() {
     const { state, toggleModal } = useModal();
-    const {
-      isModalActive,
-      setFirstValue,
-      setSecondValue,
-      setThirdValue
-    } = toRefs(state);
+    const { isModalActive } = toRefs(state);
 
     return {
       isModalActive,
-      setFirstValue,
-      setSecondValue,
-      setThirdValue,
       toggleModal,
     };
   },

@@ -1,18 +1,26 @@
 <template>
-  <div class="modal">
+  <div v-if="!setFirstValue !== '' && !setSecondValue !== ''" class="modal">
     <p>1枚目</p>
-    <button>閉じる</button>
-    <button>次へ進む</button>
+    <button type="button" @click="toggleModal">閉じる</button>
+    <button type="button" @click="firstModalFunc">次へ進む</button>
   </div>
 </template>
 
 <script lang="ts">
-import { defineComponent } from 'vue';
+import { defineComponent, toRefs } from 'vue';
+import { useModal } from '../../composables/use-modal';
 
 export default defineComponent({
+  emits: ['closeModal'],
   setup() {
-    return {
+    const { state, toggleModal, firstModalFunc } = useModal();
+    const { setFirstValue, setSecondValue } = toRefs(state);
 
+    return {
+      toggleModal,
+      setFirstValue,
+      setSecondValue,
+      firstModalFunc,
     };
   },
 });

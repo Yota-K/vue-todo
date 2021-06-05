@@ -36,13 +36,13 @@ export default defineComponent({
     }
   },
   emits: ['toggleTodo', 'removeTodo'],
-  setup(props: Props, context: SetupContext) {
+  setup(props: Props, { emit }) {
     const toggleTodo = () => {
-      context.emit('toggleTodo', props.id);
+      emit('toggleTodo', props.id);
     }
 
     const removeTodo = () => {
-      context.emit('removeTodo', props.id);
+      emit('removeTodo', props.id);
     }
 
     return {

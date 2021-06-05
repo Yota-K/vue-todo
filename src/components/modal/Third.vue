@@ -1,17 +1,23 @@
 <template>
-  <div class="modal">
+  <div v-if="setFirstValue && setSecondValue" class="modal">
     <p>3枚目</p>
-    <button>閉じる</button>
+    <button @click="$emit('closeModal')">閉じる</button>
   </div>
 </template>
 
 <script lang="ts">
-import { defineComponent } from 'vue';
+import { defineComponent, toRefs } from 'vue';
+import { useModal } from '../../composables/use-modal';
 
 export default defineComponent({
+  emits: ['closeModal'],
   setup() {
-    return {
+    const { state,  } = useModal();
+    const { setFirstValue, setSecondValue } = toRefs(state);
 
+    return {
+      setFirstValue,
+      setSecondValue,
     };
   },
 });
