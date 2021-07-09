@@ -22,6 +22,8 @@
       />
     </ul>
     <p v-else>TODOが登録されていません</p>
+    <h2>マルチセレクト</h2>
+    <MultiSelect />
   </div>
 </template>
 
@@ -29,6 +31,7 @@
 import { defineComponent } from 'vue'
 import ToDoItem from '../components/ToDoItem.vue'
 import Button from '../components/Button.vue'
+import MultiSelect from '../components/MultiSelect.vue'
 import { useTodo } from '../store/todo/use-todo';
 import { useInputValue } from '../composables/use-input-value';
 import { useFilterValue } from '../composables/use-filter-value';
@@ -37,7 +40,8 @@ export default defineComponent({
   name: 'ToDoList',
   components: {
     ToDoItem,
-    Button
+    Button,
+    MultiSelect,
   },
   setup() {
     const { addTodo, removeTodo, toggleTodo } = useTodo();

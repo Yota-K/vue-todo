@@ -7,6 +7,7 @@
   },
   "dependencies": {
     "vue": "^3.0.4",
+    "vue-multiselect": "^3.0.0-alpha.2",
     "vue-router": "4"
   },
   "devDependencies": {
