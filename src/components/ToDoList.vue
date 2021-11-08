@@ -22,8 +22,6 @@
       />
     </ul>
     <p v-else>TODOが登録されていません</p>
-    <h2>マルチセレクト</h2>
-    <MultiSelect />
   </div>
 </template>
 
